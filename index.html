@@ -219,6 +219,7 @@
     .setting-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; color: #91aabd; font-size: 12px; letter-spacing: .08em; }
     .setting-row button { min-width: 100px; padding: 9px 12px; font-size: 11px; }
     #resumeButton { width: 100%; }
+    #pauseHomeButton { width: 100%; margin-top: 10px; border-color: #31536a; color: #91aabd; }
 
     .hint {
       position: absolute;
@@ -326,6 +327,7 @@
           <h2>暂停 / 设置</h2>
           <div class="setting-row"><span>打击感反馈</span><button id="impactButton">开启</button></div>
           <button id="resumeButton">继续游戏</button>
+          <button id="pauseHomeButton">回到主界面</button>
         </div>
       </section>
     </div>
@@ -517,7 +519,7 @@
         state = 'title'; previousState = 'title';
         ui.gameOver.classList.remove('active'); ui.levelScreen.classList.remove('active');
         ui.shop.classList.remove('active'); ui.archive.classList.remove('active'); ui.settings.classList.remove('active');
-        ui.title.classList.add('active'); updateCurrencyUI();
+        reset(); ui.title.classList.add('active'); updateCurrencyUI();
       }
 
       function finalizeRun() {
@@ -971,6 +973,7 @@
       document.querySelector('#homeButton').addEventListener('click', returnTitle);
       document.querySelector('#settingsButton').addEventListener('click', openSettings);
       document.querySelector('#resumeButton').addEventListener('click', closeSettings);
+      document.querySelector('#pauseHomeButton').addEventListener('click', returnTitle);
       document.querySelector('#impactButton').addEventListener('click', () => {
         saveData.settings.impact = !saveData.settings.impact;
         ui.impact.textContent = saveData.settings.impact ? '开启' : '关闭';
