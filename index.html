@@ -128,7 +128,7 @@
     }
 
     .subtitle {
-      margin: 12px 0 44px;
+      margin: 12px 0 20px;
       color: #7390a8;
       font-size: 11px;
       letter-spacing: 0.32em;
@@ -171,7 +171,7 @@
     }
 
     .currency {
-      margin: -28px 0 22px;
+      margin: 0 0 13px;
       color: var(--orange);
       font-size: 12px;
       letter-spacing: .12em;
@@ -180,6 +180,13 @@
 
     .menu-actions { display: flex; gap: 10px; margin-top: 12px; }
     .menu-actions button { min-width: 112px; padding: 10px 12px; border-color: #31536a; color: #91aabd; font-size: 11px; }
+
+    .difficulty-wrap { width: 100%; max-width: 360px; margin-bottom: 15px; }
+    .difficulty-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+    .difficulty-button { min-width: 0; padding: 8px 3px; border-color: #29485e; color: #6f8ba0; font-size: 10px; letter-spacing: .06em; }
+    .difficulty-button.active { border-color: var(--cyan); color: var(--cyan); background: rgba(67, 228, 242, .09); box-shadow: 0 0 14px rgba(67, 228, 242, .12); }
+    .difficulty-button[data-difficulty="hell"].active { border-color: var(--pink); color: var(--pink); background: rgba(255, 79, 145, .09); }
+    #difficultyDesc { min-height: 15px; margin: 7px 0 0; color: #526d83; font-size: 9px; letter-spacing: .04em; }
 
     .panel-screen { background: rgba(3, 10, 20, .93); backdrop-filter: blur(4px); justify-content: flex-start; overflow-y: auto; }
     .panel-title { margin: 25px 0 5px; color: var(--cyan); font-weight: 300; letter-spacing: .25em; text-indent: .25em; }
@@ -196,13 +203,24 @@
     .shop-item[data-category="ship"][data-skin="cyan"] i { clip-path: polygon(50% 0, 82% 100%, 50% 72%, 18% 100%); }
     .shop-item[data-category="ship"][data-skin="violet"] i { clip-path: polygon(50% 0, 63% 38%, 100% 48%, 76% 66%, 68% 100%, 50% 78%, 32% 100%, 24% 66%, 0 48%, 37% 38%); }
     .shop-item[data-category="ship"][data-skin="gold"] i { border: 3px solid currentColor; border-radius: 50%; background: transparent; clip-path: polygon(0 0, 100% 0, 100% 100%, 62% 100%, 50% 62%, 38% 100%, 0 100%); }
+    .shop-item[data-category="ship"][data-skin="ghost"] i { clip-path: polygon(50% 0, 68% 40%, 100% 62%, 68% 66%, 50% 100%, 32% 66%, 0 62%, 32% 40%); }
+    .shop-item[data-category="ship"][data-skin="prism"] i { clip-path: polygon(50% 0, 100% 88%, 64% 70%, 50% 100%, 36% 70%, 0 88%); }
+    .shop-item[data-category="ship"][data-skin="eclipse"] i { border-radius: 50%; clip-path: polygon(0 0, 100% 0, 65% 35%, 65% 65%, 100% 100%, 0 100%); }
     .shop-item[data-category="bullet"] i { transform: none; }
     .shop-item[data-category="bullet"][data-skin="cyan"] i { width: 4px; height: 27px; border: 0; border-radius: 4px; background: currentColor; }
     .shop-item[data-category="bullet"][data-skin="lime"] i { width: 19px; height: 19px; border-radius: 50%; transform: none; background: currentColor; }
     .shop-item[data-category="bullet"][data-skin="pink"] i { width: 18px; height: 18px; background: transparent; }
+    .shop-item[data-category="bullet"][data-skin="arc"] i { width: 19px; height: 28px; border: 0; background: currentColor; clip-path: polygon(58% 0, 20% 46%, 48% 46%, 32% 100%, 82% 37%, 54% 37%); }
+    .shop-item[data-category="bullet"][data-skin="ring"] i { width: 21px; height: 21px; border-radius: 50%; transform: none; }
+    .shop-item[data-category="bullet"][data-skin="comet"] i { width: 12px; height: 27px; border: 0; border-radius: 50% 50% 35% 35%; background: currentColor; transform: none; }
     .shop-item[data-category="enemy"][data-skin="classic"] i { border-radius: 35%; }
     .shop-item[data-category="enemy"][data-skin="ember"] i { border: 0; background: currentColor; clip-path: polygon(50% 0, 62% 34%, 100% 24%, 72% 52%, 100% 76%, 63% 68%, 50% 100%, 38% 68%, 0 76%, 28% 52%, 0 24%, 38% 34%); transform: none; }
     .shop-item[data-category="enemy"][data-skin="ice"] i { width: 18px; height: 30px; background: transparent; transform: none; clip-path: polygon(50% 0, 100% 45%, 70% 100%, 30% 100%, 0 45%); }
+    .shop-item[data-category="enemy"][data-skin="void"] i { border-radius: 50%; background: transparent; box-shadow: inset 0 0 9px currentColor, 0 0 9px currentColor; }
+    .shop-item[data-category="enemy"][data-skin="circuit"] i { transform: none; border-radius: 2px; box-shadow: 6px -5px 0 -4px currentColor, -6px 5px 0 -4px currentColor; }
+    .shop-item[data-category="enemy"][data-skin="bio"] i { border-radius: 45% 55% 38% 62%; transform: rotate(18deg); }
+    .shop-item[data-category="consumable"] i { width: 25px; height: 25px; transform: none; border-radius: 50%; }
+    .shop-item[data-category="consumable"] { color: var(--orange); }
     .shop-item strong { display: block; margin-bottom: 4px; color: var(--text); font-size: 11px; font-weight: 500; }
     .shop-item.equipped { border-color: var(--lime); color: var(--lime); }
 
@@ -287,6 +305,15 @@
         <h1 class="logo">NEON<br />FLIGHT</h1>
         <p class="subtitle">BREAK · GROW · SURVIVE</p>
         <div id="titleCurrency" class="currency">◇ 0 能量晶体</div>
+        <div class="difficulty-wrap">
+          <div id="difficultyOptions" class="difficulty-options">
+            <button class="difficulty-button" data-difficulty="easy">简单</button>
+            <button class="difficulty-button active" data-difficulty="normal">普通</button>
+            <button class="difficulty-button" data-difficulty="hard">困难</button>
+            <button class="difficulty-button" data-difficulty="hell">地狱</button>
+          </div>
+          <p id="difficultyDesc">标准速度与奖励倍率</p>
+        </div>
         <button id="startButton">开始飞行</button>
         <div class="menu-actions">
           <button id="shopButton">机库商店</button>
@@ -350,6 +377,8 @@
         credits: 0,
         unlocked: { ship: ['cyan'], bullet: ['cyan'], enemy: ['classic'] },
         equipped: { ship: 'cyan', bullet: 'cyan', enemy: 'classic' },
+        inventory: { shield: 0, damage: 0, xp: 0, upgrade: 0 },
+        difficulty: 'normal',
         settings: { impact: true },
         stats: { runs: 0, bestTime: 0, bestKills: 0, highestLevel: 1, totalKills: 0, totalTime: 0, recent: [] }
       };
@@ -361,6 +390,7 @@
             ...defaultSave, ...raw,
             unlocked: { ...defaultSave.unlocked, ...(raw.unlocked || {}) },
             equipped: { ...defaultSave.equipped, ...(raw.equipped || {}) },
+            inventory: { ...defaultSave.inventory, ...(raw.inventory || {}) },
             settings: { ...defaultSave.settings, ...(raw.settings || {}) },
             stats: { ...defaultSave.stats, ...(raw.stats || {}) }
           };
@@ -368,25 +398,49 @@
       }
 
       const saveData = loadSave();
+      const difficulties = {
+        easy: { name: '简单', speed: .78, hp: .82, spawn: 1.18, hazard: 1.28, reward: .75, desc: '更慢、更疏，晶体 ×0.75' },
+        normal: { name: '普通', speed: 1, hp: 1, spawn: 1, hazard: 1, reward: 1, desc: '标准速度与奖励倍率' },
+        hard: { name: '困难', speed: 1.25, hp: 1.32, spawn: .82, hazard: .82, reward: 1.55, desc: '更快更密，晶体 ×1.55' },
+        hell: { name: '地狱', speed: 1.58, hp: 1.72, spawn: .66, hazard: .65, reward: 2.3, desc: '极速高压，晶体 ×2.30' }
+      };
       const skinPalettes = {
-        ship: { cyan: C.cyan, violet: '#ad7aff', gold: '#ffd166' },
-        bullet: { cyan: C.cyan, lime: C.lime, pink: C.pink },
+        ship: { cyan: C.cyan, violet: '#ad7aff', gold: '#ffd166', ghost: '#72f1c7', prism: '#f4a7ff', eclipse: '#ff586e' },
+        bullet: { cyan: C.cyan, lime: C.lime, pink: C.pink, arc: '#ffe66d', ring: '#7df9ff', comet: '#ff8c42' },
         enemy: {
           classic: { pink: C.pink, orange: C.orange, lime: C.lime },
           ember: { pink: '#ff6b35', orange: '#ffc857', lime: '#fff08a' },
-          ice: { pink: '#53d8fb', orange: '#769cff', lime: '#d3f4ff' }
+          ice: { pink: '#53d8fb', orange: '#769cff', lime: '#d3f4ff' },
+          void: { pink: '#9d7bff', orange: '#6c63ff', lime: '#c5b3ff' },
+          circuit: { pink: '#00f5d4', orange: '#00bbf9', lime: '#b8f2e6' },
+          bio: { pink: '#ff70a6', orange: '#ff9770', lime: '#c7f464' }
         }
       };
       const shopItems = [
         { category: 'ship', id: 'cyan', name: '青色信标', price: 0 },
         { category: 'ship', id: 'violet', name: '紫晶幻影', price: 80 },
         { category: 'ship', id: 'gold', name: '黄金航迹', price: 160 },
+        { category: 'ship', id: 'ghost', name: '幽灵折翼', price: 220 },
+        { category: 'ship', id: 'prism', name: '棱镜三角', price: 300 },
+        { category: 'ship', id: 'eclipse', name: '日蚀之环', price: 420 },
         { category: 'bullet', id: 'cyan', name: '标准脉冲', price: 0 },
         { category: 'bullet', id: 'lime', name: '绿光射线', price: 60 },
         { category: 'bullet', id: 'pink', name: '樱红弹道', price: 120 },
+        { category: 'bullet', id: 'arc', name: '电弧闪击', price: 170 },
+        { category: 'bullet', id: 'ring', name: '零点光环', price: 240 },
+        { category: 'bullet', id: 'comet', name: '彗星弹头', price: 330 },
         { category: 'enemy', id: 'classic', name: '经典霓虹', price: 0 },
         { category: 'enemy', id: 'ember', name: '熔火目标', price: 90 },
-        { category: 'enemy', id: 'ice', name: '极地目标', price: 150 }
+        { category: 'enemy', id: 'ice', name: '极地目标', price: 150 },
+        { category: 'enemy', id: 'void', name: '虚空星体', price: 210 },
+        { category: 'enemy', id: 'circuit', name: '电路矩阵', price: 290 },
+        { category: 'enemy', id: 'bio', name: '生物脉体', price: 390 }
+      ];
+      const consumableItems = [
+        { id: 'shield', name: '应急护盾', price: 35, max: 3, desc: '下局 +1 护盾' },
+        { id: 'damage', name: '火力芯片', price: 45, max: 3, desc: '下局伤害 +2' },
+        { id: 'xp', name: '经验电池', price: 30, max: 3, desc: '下局初始经验 +4' },
+        { id: 'upgrade', name: '预载模块', price: 70, max: 2, desc: '开局直接升级三选一' }
       ];
 
       const ui = {
@@ -399,7 +453,8 @@
         resume: document.querySelector('#resumeButton'), titleCurrency: document.querySelector('#titleCurrency'),
         shop: document.querySelector('#shopScreen'), shopContent: document.querySelector('#shopContent'),
         shopCurrency: document.querySelector('#shopCurrency'), archive: document.querySelector('#archiveScreen'),
-        archiveContent: document.querySelector('#archiveContent')
+        archiveContent: document.querySelector('#archiveContent'),
+        difficultyOptions: document.querySelector('#difficultyOptions'), difficultyDesc: document.querySelector('#difficultyDesc')
       };
 
       let state = 'title', previousState = 'title', runAwarded = false;
@@ -407,7 +462,7 @@
       let elapsed = 0, spawnTimer = 0, hazardTimer = 0, gridOffset = 0, shake = 0, hitStop = 0;
       let bullets = [], enemies = [], particles = [], orbs = [], shockwaves = [];
       let keys = new Set(), pointer = { active: false, x: W / 2, y: H * .8 };
-      let audioCtx = null;
+      let audioCtx = null, lastShotSound = 0, hudTimer = 0, activeVoices = 0;
 
       const player = {
         x: W / 2, y: H - 120, tx: W / 2, ty: H - 120, r: 13,
@@ -418,7 +473,7 @@
 
       const upgrades = [
         { id: 'damage', icon: '◇', name: '聚焦火力', desc: '子弹伤害 +2', apply: () => player.damage += 2 },
-        { id: 'rate', icon: '≋', name: '超频扳机', desc: '射速提高 30%', apply: () => player.fireRate *= 1.30 },
+        { id: 'rate', icon: '≋', name: '超频扳机', desc: '射速提高 30%', apply: () => player.fireRate = Math.min(16, player.fireRate * 1.30) },
         { id: 'twin', icon: 'Ⅱ', name: '并行弹道', desc: '额外发射一枚子弹', apply: () => player.shots = Math.min(5, player.shots + 1) },
         { id: 'pierce', icon: '→', name: '相位穿透', desc: '子弹额外穿透两个目标', apply: () => player.pierce += 2 },
         { id: 'size', icon: '●', name: '扩张弹头', desc: '子弹尺寸 +45%', apply: () => player.bulletSize *= 1.45 },
@@ -455,6 +510,17 @@
         ui.shopCurrency.textContent = text;
       }
 
+      function activeDifficulty() { return difficulties[saveData.difficulty] || difficulties.normal; }
+
+      function updateDifficultyUI() {
+        const selected = saveData.difficulty in difficulties ? saveData.difficulty : 'normal';
+        saveData.difficulty = selected;
+        ui.difficultyOptions.querySelectorAll('.difficulty-button').forEach(button => {
+          button.classList.toggle('active', button.dataset.difficulty === selected);
+        });
+        ui.difficultyDesc.textContent = difficulties[selected].desc;
+      }
+
       function renderShop() {
         updateCurrencyUI(); ui.shopContent.innerHTML = '';
         const groups = [['ship', '战机皮肤'], ['bullet', '子弹皮肤'], ['enemy', '目标皮肤']];
@@ -483,6 +549,24 @@
           }
           ui.shopContent.appendChild(section);
         }
+        const supply = document.createElement('div'); supply.className = 'shop-group';
+        supply.innerHTML = '<h3>一次性战备 · 每局自动消耗一份</h3><div class="shop-row"></div>';
+        const supplyRow = supply.querySelector('.shop-row');
+        for (const item of consumableItems) {
+          const owned = saveData.inventory[item.id] || 0;
+          const button = document.createElement('button');
+          button.className = 'shop-item'; button.dataset.category = 'consumable'; button.dataset.skin = item.id;
+          button.innerHTML = `<i></i><strong>${item.name}</strong><span>${item.desc}<br>◇ ${item.price} · ${owned}/${item.max}</span>`;
+          button.disabled = owned >= item.max || saveData.credits < item.price;
+          button.addEventListener('click', () => {
+            const current = saveData.inventory[item.id] || 0;
+            if (current >= item.max || saveData.credits < item.price) return;
+            saveData.credits -= item.price; saveData.inventory[item.id] = current + 1;
+            saveProgress(); renderShop(); tone(520, .1, 'sine', .025, 160);
+          });
+          supplyRow.appendChild(button);
+        }
+        ui.shopContent.appendChild(supply);
       }
 
       function formatTime(seconds) {
@@ -525,11 +609,11 @@
       function finalizeRun() {
         if (runAwarded) return 0;
         runAwarded = true;
-        const earned = Math.max(5, Math.floor(player.kills * 2 + elapsed / 10 + player.level * 3));
+        const earned = Math.max(4, Math.floor((player.kills * 2 + elapsed / 10 + player.level * 3) * activeDifficulty().reward));
         const s = saveData.stats;
         saveData.credits += earned; s.runs++; s.totalKills += player.kills; s.totalTime += elapsed;
         s.bestTime = Math.max(s.bestTime, elapsed); s.bestKills = Math.max(s.bestKills, player.kills); s.highestLevel = Math.max(s.highestLevel, player.level);
-        s.recent.unshift({ time: elapsed, kills: player.kills, level: player.level, earned });
+        s.recent.unshift({ time: elapsed, kills: player.kills, level: player.level, earned, difficulty: saveData.difficulty });
         s.recent = s.recent.slice(0, 5); saveProgress();
         return earned;
       }
@@ -542,15 +626,30 @@
           xpGain: 1, level: 1, xp: 0, xpNext: 8, shield: 0, kills: 0
         });
         bullets = []; enemies = []; particles = []; orbs = []; shockwaves = [];
-        elapsed = 0; spawnTimer = .5; hazardTimer = 2.2; shake = 0; hitStop = 0;
+        elapsed = 0; spawnTimer = .5; hazardTimer = 2.2; shake = 0; hitStop = 0; hudTimer = 0;
         updateHUD();
       }
 
+      function applyConsumables() {
+        let used = false, preloadedUpgrade = false;
+        const consume = id => {
+          if ((saveData.inventory[id] || 0) <= 0) return false;
+          saveData.inventory[id]--; used = true; return true;
+        };
+        if (consume('shield')) player.shield++;
+        if (consume('damage')) player.damage += 2;
+        if (consume('xp')) player.xp = Math.min(player.xpNext - 1, player.xp + 4);
+        if (consume('upgrade')) preloadedUpgrade = true;
+        if (used) saveProgress();
+        return preloadedUpgrade;
+      }
+
       function startGame() {
-        ensureAudio(); reset(); runAwarded = false; state = 'playing';
+        ensureAudio(); reset(); const preloadedUpgrade = applyConsumables(); runAwarded = false; state = 'playing';
         ui.title.classList.remove('active'); ui.gameOver.classList.remove('active');
         ui.shop.classList.remove('active'); ui.archive.classList.remove('active'); ui.settings.classList.remove('active');
-        tone(220, .06, 'sine', .04);
+        updateHUD(); tone(220, .06, 'sine', .04);
+        if (preloadedUpgrade) setTimeout(() => { if (state === 'playing') showLevelUp(); }, 140);
       }
 
       function ensureAudio() {
@@ -559,7 +658,8 @@
       }
 
       function tone(freq, duration, type = 'sine', volume = .025, slide = 0) {
-        if (!audioCtx) return;
+        if (!audioCtx || activeVoices >= 16) return;
+        activeVoices++;
         const now = audioCtx.currentTime;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -568,35 +668,41 @@
         gain.gain.setValueAtTime(volume, now);
         gain.gain.exponentialRampToValueAtTime(.0001, now + duration);
         osc.connect(gain).connect(audioCtx.destination); osc.start(now); osc.stop(now + duration);
+        osc.onended = () => { activeVoices = Math.max(0, activeVoices - 1); };
       }
 
       function spawnEnemy() {
+        if (enemies.length >= 90) return;
+        const mode = activeDifficulty();
         const speedScale = Math.min(3.5, 1 + elapsed / 38);
         const roll = Math.random();
         const type = roll < .62 ? 'pink' : roll < .88 ? 'orange' : 'lime';
         const base = type === 'pink' ? 2 : type === 'orange' ? 5 : 11;
         const radius = type === 'pink' ? rand(18, 25) : type === 'orange' ? rand(22, 30) : rand(32, 43);
-        const hp = Math.ceil(base * (1 + elapsed / 75));
+        const hp = Math.ceil(base * (1 + elapsed / 75) * mode.hp);
         enemies.push({
           x: rand(42, W - 42), y: -radius - 10, r: radius, hp, maxHp: hp,
-          speed: rand(52, 78) * speedScale, color: targetColor(type), type,
+          speed: rand(52, 78) * speedScale * mode.speed, color: targetColor(type), type,
           rot: rand(0, Math.PI * 2), spin: rand(-1.35, 1.35), sides: type === 'lime' ? 8 : type === 'orange' ? 7 : 5,
           hit: 0, wobble: rand(0, 10), dead: false, invulnerable: false
         });
       }
 
       function spawnHazard() {
+        if (enemies.length >= 90) return;
+        const mode = activeDifficulty();
         const speedScale = Math.min(3.5, 1 + elapsed / 38);
         const radius = rand(25, 38);
         enemies.push({
           x: rand(44, W - 44), y: -radius - 10, r: radius, hp: Infinity, maxHp: Infinity,
-          speed: rand(68, 94) * speedScale, color: C.steel, type: 'steel',
+          speed: rand(68, 94) * speedScale * mode.speed, color: C.steel, type: 'steel',
           rot: rand(0, Math.PI * 2), spin: rand(-1.15, 1.15), sides: Math.random() < .5 ? 6 : 8,
           hit: 0, wobble: rand(0, 10), dead: false, invulnerable: true
         });
       }
 
       function shoot() {
+        if (bullets.length >= 180) return;
         const n = player.shots;
         for (let i = 0; i < n; i++) {
           const spread = (i - (n - 1) / 2) * 12;
@@ -607,7 +713,8 @@
             r: player.bulletSize, damage: player.damage, hits: player.pierce, life: 1.7
           });
         }
-        tone(480, .025, 'square', .012, 100);
+        const now = performance.now();
+        if (now - lastShotSound > 70) { tone(480, .025, 'square', .012, 100); lastShotSound = now; }
         emit(player.x, player.y - 18, bulletColor(), 2, 45, .18);
       }
 
@@ -683,7 +790,8 @@
       }
 
       function emit(x, y, color, count, speed, life, lines = false) {
-        for (let i = 0; i < count; i++) {
+        const allowed = Math.max(0, Math.min(count, 420 - particles.length));
+        for (let i = 0; i < allowed; i++) {
           const a = rand(0, Math.PI * 2), s = rand(speed * .35, speed);
           particles.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: rand(life * .55, life), max: life, color, size: rand(1.5, 3.5), lines, rot: a, spin: rand(-6, 6) });
         }
@@ -694,7 +802,7 @@
         shake = Math.max(0, shake - dt * 24);
         if (state === 'paused') return;
         if (state !== 'playing') { updateEffects(dt); return; }
-        elapsed += dt;
+        elapsed += dt; hudTimer -= dt;
 
         let dx = 0, dy = 0;
         if (keys.has('ArrowLeft') || keys.has('KeyA')) dx--;
@@ -716,12 +824,12 @@
         spawnTimer -= dt;
         if (spawnTimer <= 0) {
           spawnEnemy();
-          spawnTimer = Math.max(.18, .82 - elapsed * .006) * rand(.72, 1.16);
+          spawnTimer = Math.max(.14, Math.max(.18, .82 - elapsed * .006) * activeDifficulty().spawn) * rand(.72, 1.16);
         }
         hazardTimer -= dt;
         if (hazardTimer <= 0) {
           spawnHazard();
-          hazardTimer = Math.max(2.1, 5.2 - elapsed * .018) * rand(.82, 1.16);
+          hazardTimer = Math.max(1.25, Math.max(2.1, 5.2 - elapsed * .018) * activeDifficulty().hazard) * rand(.82, 1.16);
         }
 
         for (const b of bullets) { b.x += b.vx * dt; b.y += b.vy * dt; b.life -= dt; }
@@ -734,7 +842,8 @@
           if (b.life <= 0) continue;
           for (const e of enemies) {
             if (e.dead || b.life <= 0) continue;
-            if (Math.hypot(b.x - e.x, b.y - e.y) < e.r + b.r) {
+            const dx = b.x - e.x, dy = b.y - e.y, rr = e.r + b.r;
+            if (Math.abs(dy) <= rr && dx * dx + dy * dy < rr * rr) {
               damageEnemy(e, b.damage, b.x, b.y);
               if (b.hits > 0) b.hits--; else b.life = 0;
             }
@@ -762,7 +871,9 @@
         bullets = bullets.filter(b => b.life > 0 && b.y > -30 && b.x > -30 && b.x < W + 30);
         enemies = enemies.filter(e => !e.dead);
         orbs = orbs.filter(o => !o.dead && o.y < H + 40);
-        updateEffects(dt); updateHUD();
+        if (orbs.length > 220) orbs.splice(0, orbs.length - 220);
+        updateEffects(dt);
+        if (hudTimer <= 0) { updateHUD(); hudTimer = .1; }
       }
 
       function updateEffects(dt) {
@@ -822,6 +933,21 @@
           ctx.lineWidth = 1.5; ctx.globalAlpha = .75; ctx.beginPath(); ctx.arc(0, 1, 20 + Math.sin(elapsed * 5) * 1.5, 0, Math.PI * 2); ctx.stroke();
           const orbit = elapsed * 4; ctx.fillStyle = color; ctx.beginPath(); ctx.arc(Math.cos(orbit) * 20, 1 + Math.sin(orbit) * 20, 2.2, 0, Math.PI * 2); ctx.fill();
           ctx.globalAlpha = .6 + Math.random() * .25; ctx.beginPath(); ctx.moveTo(-4, 10); ctx.lineTo(0, 28 + Math.random() * 6); ctx.lineTo(4, 10); ctx.stroke();
+        } else if (skin === 'ghost') {
+          ctx.globalAlpha = .72; ctx.beginPath(); ctx.moveTo(0, -20); ctx.quadraticCurveTo(6, -2, 22, 3); ctx.lineTo(8, 9); ctx.lineTo(0, 5); ctx.lineTo(-8, 9); ctx.lineTo(-22, 3); ctx.quadraticCurveTo(-6, -2, 0, -20); ctx.stroke();
+          ctx.globalAlpha = .22; ctx.lineWidth = 1.5;
+          for (let i = 1; i <= 2; i++) { ctx.beginPath(); ctx.moveTo(-17 + i * 3, 7 + i * 5); ctx.quadraticCurveTo(0, 16 + i * 6, 17 - i * 3, 7 + i * 5); ctx.stroke(); }
+          ctx.globalAlpha = .8; ctx.beginPath(); ctx.moveTo(0, -11); ctx.lineTo(4, 3); ctx.lineTo(0, 8); ctx.lineTo(-4, 3); ctx.closePath(); ctx.stroke();
+        } else if (skin === 'prism') {
+          ctx.rotate(Math.sin(elapsed * 2) * .035); ctx.lineWidth = 3;
+          ctx.beginPath(); ctx.moveTo(0, -22); ctx.lineTo(20, 15); ctx.lineTo(0, 8); ctx.lineTo(-20, 15); ctx.closePath(); ctx.fill(); ctx.stroke();
+          ctx.rotate(elapsed * 1.8); ctx.globalAlpha = .8; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(0, -8); ctx.lineTo(7, 5); ctx.lineTo(-7, 5); ctx.closePath(); ctx.stroke();
+          ctx.globalAlpha = .35; ctx.beginPath(); ctx.arc(0, 0, 23, 0, Math.PI * 2); ctx.stroke();
+        } else if (skin === 'eclipse') {
+          ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 1, 17, -Math.PI * .72, Math.PI * .72); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(0, -23); ctx.lineTo(7, 7); ctx.lineTo(0, 3); ctx.lineTo(-7, 7); ctx.closePath(); ctx.fill(); ctx.stroke();
+          ctx.globalAlpha = .45; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(0, 1, 23 + Math.sin(elapsed * 4), 0, Math.PI * 2); ctx.stroke();
+          ctx.fillStyle = color; ctx.globalAlpha = .9; ctx.beginPath(); ctx.arc(-17, 1, 2.5, 0, Math.PI * 2); ctx.fill();
         } else {
           ctx.beginPath(); ctx.moveTo(0, -18); ctx.lineTo(12, 12); ctx.lineTo(3, 8); ctx.lineTo(0, 17); ctx.lineTo(-3, 8); ctx.lineTo(-12, 12); ctx.closePath(); ctx.fill(); ctx.stroke();
           ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, -8); ctx.lineTo(5, 7); ctx.lineTo(0, 4); ctx.lineTo(-5, 7); ctx.closePath(); ctx.stroke();
@@ -842,6 +968,14 @@
           ctx.rotate(Math.PI / 4); ctx.fillStyle = hexAlpha(color, .18); ctx.lineWidth = 2;
           const s = 4 + b.r; ctx.beginPath(); ctx.rect(-s / 2, -s / 2, s, s); ctx.fill(); ctx.stroke();
           ctx.globalAlpha = .55; ctx.beginPath(); ctx.moveTo(s / 2, s / 2); ctx.lineTo(s * 1.7, s * 1.7); ctx.stroke();
+        } else if (skin === 'arc') {
+          ctx.lineWidth = 2.2; ctx.beginPath(); ctx.moveTo(-2, 11); ctx.lineTo(3, 5); ctx.lineTo(-3, 0); ctx.lineTo(3, -6); ctx.lineTo(0, -11); ctx.stroke();
+        } else if (skin === 'ring') {
+          ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(0, 0, b.r * 1.7 + 2, 0, Math.PI * 2); ctx.stroke();
+          ctx.globalAlpha = .45; ctx.beginPath(); ctx.arc(0, 5, b.r * 2.5 + 2, 0, Math.PI * 2); ctx.stroke();
+        } else if (skin === 'comet') {
+          ctx.beginPath(); ctx.ellipse(0, -2, b.r * 1.15 + 1, b.r * 1.7 + 2, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.globalAlpha = .65; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(-2, 2); ctx.lineTo(-5, 16 + b.r); ctx.moveTo(2, 2); ctx.lineTo(5, 13 + b.r); ctx.stroke();
         } else {
           ctx.beginPath(); ctx.moveTo(0, 8 + b.r); ctx.lineTo(0, -7 - b.r); ctx.stroke();
         }
@@ -861,6 +995,10 @@
         } else {
           ctx.rotate(-e.rot * 1.7); ctx.lineWidth = 2; polygonPath(4, e.r * .25, 0); ctx.stroke();
           ctx.beginPath(); ctx.arc(0, 0, e.r * .09, 0, Math.PI * 2); ctx.stroke();
+          const skin = saveData.equipped.enemy;
+          if (skin === 'void') { ctx.globalAlpha = .45; ctx.beginPath(); ctx.ellipse(0, 0, e.r * .52, e.r * .18, elapsed, 0, Math.PI * 2); ctx.stroke(); }
+          if (skin === 'circuit') { ctx.globalAlpha = .6; const q = e.r * .42; ctx.beginPath(); ctx.moveTo(-q, 0); ctx.lineTo(-q * .55, 0); ctx.moveTo(q * .55, 0); ctx.lineTo(q, 0); ctx.moveTo(0, -q); ctx.lineTo(0, -q * .55); ctx.stroke(); }
+          if (skin === 'bio') { ctx.globalAlpha = .55; ctx.beginPath(); ctx.arc(0, 0, e.r * .38, -.6, Math.PI + .8); ctx.stroke(); }
         }
         ctx.restore();
 
@@ -875,10 +1013,41 @@
         if (e.invulnerable || saveData.equipped.enemy === 'classic') {
           polygonPath(e.sides, e.r * scale, e.wobble); return;
         }
-        if (saveData.equipped.enemy === 'ember') {
+        const skin = saveData.equipped.enemy;
+        if (skin === 'ember') {
           starPath(Math.max(5, e.sides), e.r * scale, e.r * .58 * scale, e.wobble); return;
         }
-        crystalPath(e.r * scale, e.wobble);
+        if (skin === 'ice') { crystalPath(e.r * scale, e.wobble); return; }
+        if (skin === 'void') { voidPath(e.r * scale, e.wobble); return; }
+        if (skin === 'circuit') { circuitPath(e.r * scale); return; }
+        bioPath(e.r * scale, e.wobble);
+      }
+
+      function voidPath(radius, wobble) {
+        ctx.beginPath();
+        for (let i = 0; i < 12; i++) {
+          const a = i / 12 * Math.PI * 2, rr = radius * (.88 + Math.sin(i * 2.4 + wobble) * .13);
+          const x = Math.cos(a) * rr, y = Math.sin(a) * rr;
+          i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+        }
+        ctx.closePath();
+      }
+
+      function circuitPath(radius) {
+        const r = radius, m = r * .48;
+        ctx.beginPath(); ctx.moveTo(-m, -r); ctx.lineTo(m, -r); ctx.lineTo(m, -m); ctx.lineTo(r, -m);
+        ctx.lineTo(r, m); ctx.lineTo(m, m); ctx.lineTo(m, r); ctx.lineTo(-m, r);
+        ctx.lineTo(-m, m); ctx.lineTo(-r, m); ctx.lineTo(-r, -m); ctx.lineTo(-m, -m); ctx.closePath();
+      }
+
+      function bioPath(radius, wobble) {
+        ctx.beginPath();
+        for (let i = 0; i < 9; i++) {
+          const a = i / 9 * Math.PI * 2, rr = radius * (.78 + .2 * Math.sin(i * 3 + wobble));
+          const x = Math.cos(a) * rr, y = Math.sin(a) * rr;
+          i ? ctx.quadraticCurveTo(Math.cos(a - .22) * radius, Math.sin(a - .22) * radius, x, y) : ctx.moveTo(x, y);
+        }
+        ctx.closePath();
       }
 
       function starPath(points, outer, inner, wobble) {
@@ -918,7 +1087,8 @@
 
       function drawParticle(p) {
         const a = Math.max(0, p.life / p.max);
-        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.globalAlpha = a; ctx.strokeStyle = p.color; ctx.fillStyle = p.color; glow(p.color, 5);
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.globalAlpha = a; ctx.strokeStyle = p.color; ctx.fillStyle = p.color;
+        if (particles.length < 160) glow(p.color, 5);
         if (p.lines) { ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(-p.size * 2, 0); ctx.lineTo(p.size * 2, 0); ctx.stroke(); }
         else { ctx.beginPath(); ctx.arc(0, 0, p.size * a, 0, Math.PI * 2); ctx.fill(); }
         ctx.restore();
@@ -984,6 +1154,12 @@
       document.querySelector('#shopBackButton').addEventListener('click', () => ui.shop.classList.remove('active'));
       document.querySelector('#archiveButton').addEventListener('click', () => { renderArchive(); ui.archive.classList.add('active'); });
       document.querySelector('#archiveBackButton').addEventListener('click', () => ui.archive.classList.remove('active'));
+      ui.difficultyOptions.addEventListener('click', ev => {
+        const button = ev.target.closest('.difficulty-button');
+        if (!button || !difficulties[button.dataset.difficulty]) return;
+        saveData.difficulty = button.dataset.difficulty; saveProgress(); updateDifficultyUI();
+        ensureAudio(); tone(button.dataset.difficulty === 'hell' ? 150 : 320, .08, 'sine', .025, 90);
+      });
 
       function rand(a, b) { return a + Math.random() * (b - a); }
       function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
@@ -993,7 +1169,7 @@
         return `rgba(${r},${g},${b},${alpha})`;
       }
 
-      updateCurrencyUI();
+      updateCurrencyUI(); updateDifficultyUI();
       const launchParams = new URLSearchParams(location.search);
       if (launchParams.has('autostart')) startGame();
       else if (launchParams.has('shop')) { renderShop(); ui.shop.classList.add('active'); }
