@@ -187,8 +187,9 @@
       text-shadow: 0 0 12px rgba(255, 180, 62, .4);
     }
 
-    .menu-actions { display: flex; gap: 10px; margin-top: 12px; }
+    .menu-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 12px; }
     .menu-actions button { min-width: 112px; padding: 10px 12px; border-color: #31536a; color: #91aabd; font-size: 11px; }
+    #multiplayerButton { border-color: var(--pink); color: var(--pink); }
     .legal-row { display: flex; align-items: center; gap: 7px; margin-top: 12px; color: #4e687d; font-size: 9px; letter-spacing: .04em; }
     .legal-row button { min-width: 0; min-height: 40px; padding: 8px 10px; border: 0; background: transparent; color: #7892a6; font-size: 10px; letter-spacing: .05em; box-shadow: none; text-decoration: underline; }
     .legal-copy { width: 100%; max-width: 420px; color: #89a1b3; font-size: 11px; line-height: 1.75; text-align: left; }
@@ -296,7 +297,20 @@
     .choice span:last-child { color: #7892a6; font-size: 11px; line-height: 1.45; }
 
     #gameOverScreen h2 { margin: 0; color: var(--pink); font-weight: 300; font-size: 31px; letter-spacing: 0.28em; text-indent: 0.28em; }
-    #summary { margin: 18px 0 34px; color: #7892a6; font-size: 12px; line-height: 2; letter-spacing: 0.12em; }
+    #summary { margin: 18px 0 22px; color: #7892a6; font-size: 12px; line-height: 2; letter-spacing: 0.12em; }
+    #reviveButton { margin-bottom: 10px; border-color: var(--orange); color: var(--orange); }
+    #adStatus { min-height: 18px; margin: 0 0 14px; color: #607b90; font-size: 10px; letter-spacing: .06em; }
+    .lobby-card { width: 100%; max-width: 360px; padding: 24px; border: 1px solid #31536a; background: rgba(7, 20, 35, .94); }
+    .lobby-card h2 { margin: 0 0 8px; color: var(--pink); font-weight: 300; letter-spacing: .22em; text-indent: .22em; }
+    .lobby-note { margin: 0 0 18px; color: #6f8ba0; font-size: 10px; line-height: 1.65; }
+    #mpStatus { min-height: 38px; color: var(--cyan); font-size: 11px; line-height: 1.6; }
+    #mpPlayers { display: grid; gap: 6px; margin: 14px 0 18px; }
+    .mp-player { padding: 8px 10px; border: 1px solid #29485e; color: #91aabd; font-size: 10px; text-align: left; }
+    .mp-player.alive::before { content: '● '; color: var(--lime); }
+    .mp-player.out::before { content: '× '; color: var(--pink); }
+    #mpBackButton { margin-top: 9px; border-color: #31536a; color: #91aabd; }
+    #modeBadge { position: absolute; top: 70px; left: 22px; display: none; color: var(--pink); font-size: 9px; letter-spacing: .12em; }
+    #modeBadge.active { display: block; }
 
     @media (max-height: 620px) {
       .hint { display: none; }
@@ -311,10 +325,11 @@
 
     <div id="hud">
       <div class="topbar">
-        <div class="stat">LEVEL<b id="levelText">1</b></div>
+        <div class="stat"><span id="levelLabel">LEVEL</span><b id="levelText">1</b></div>
         <div class="stat right">TIME<b id="timeText">00:00</b></div>
       </div>
       <button id="settingsButton" aria-label="暂停与设置">⚙</button>
+      <div id="modeBadge">ONLINE SURVIVAL · 1/4</div>
       <div class="xp-wrap"><div id="xpBar"></div><div id="xpText">0 / 8</div></div>
 
       <section id="titleScreen" class="screen active">
@@ -334,6 +349,7 @@
         <div class="menu-actions">
           <button id="shopButton">机库商店</button>
           <button id="archiveButton">历史档案</button>
+          <button id="multiplayerButton">四人联机</button>
         </div>
         <div class="legal-row"><span>适龄提示：建议 12 岁以上</span><button id="privacyButton">隐私政策</button></div>
         <div class="hint">鼠标 / 触摸拖动飞机　·　WASD / 方向键<br />自动射击　·　碰撞即坠毁</div>
@@ -353,22 +369,33 @@
         <button id="archiveBackButton" class="panel-back">返回</button>
       </section>
 
+      <section id="multiplayerScreen" class="screen">
+        <div class="lobby-card">
+          <h2>四人联机</h2>
+          <p class="lobby-note">2–4 人同场生存 · 无升级、无战备、无复活<br />自动射击，最后存活者获胜</p>
+          <div id="mpStatus">点击匹配后连接 TapTap 联机服务</div>
+          <div id="mpPlayers"></div>
+          <button id="mpJoinButton">开始匹配</button>
+          <button id="mpBackButton">返回主界面</button>
+        </div>
+      </section>
+
       <section id="privacyScreen" class="screen panel-screen">
         <h2 class="panel-title">隐私政策</h2>
-        <p class="panel-subtitle">更新日期：2026 年 11 月 1 日</p>
+        <p class="panel-subtitle">更新日期：2026 年 11 月 2 日</p>
         <div class="legal-copy">
-          <p>NEON FLIGHT 尊重并保护玩家隐私。本游戏仅提供飞行、战斗、升级、商店及本地历史记录功能，不要求玩家在游戏内填写姓名、手机号、地址或其他敏感个人信息。</p>
+          <p>NEON FLIGHT 尊重并保护玩家隐私。本游戏提供飞行、战斗、升级、商店、本地历史记录及可选联机功能，不要求玩家在游戏内填写姓名、手机号、地址或其他敏感个人信息。</p>
           <h3>一、本地数据</h3>
           <p>游戏会在当前设备的浏览器本地存储中保存能量晶体、难度、战备库存、皮肤装备、设置与飞行记录。这些数据默认仅保存在本机，用于恢复游戏进度。</p>
           <h3>二、平台服务</h3>
-          <p>当游戏运行于 TapTap 等分发平台时，平台可能依据其隐私政策处理账号标识、设备信息、登录状态及必要的安全日志。本游戏不会擅自获取平台未授权的信息。</p>
+          <p>当游戏运行于 TapTap 等分发平台时，平台可能依据其隐私政策处理账号标识、设备信息、登录状态、联机房间数据及必要的安全日志。本游戏不会擅自获取平台未授权的信息。</p>
           <h3>三、权限与第三方共享</h3>
-          <ul><li>游戏核心玩法不需要相机、麦克风、通讯录或精确位置权限。</li><li>当前版本不含广告与付费功能。</li><li>除法律法规或平台合规要求外，我们不会出售或主动共享玩家的本地游戏数据。</li></ul>
+          <ul><li>游戏核心玩法不需要相机、麦克风、通讯录或精确位置权限。</li><li>单人模式预留激励视频复活功能；广告服务开通后，仅在玩家主动选择观看时调用平台广告。</li><li>联机模式会通过 TapTap 运行时同步房间、位置、存活状态和比赛事件，不同步本地商店存档。</li><li>除法律法规或平台合规要求外，我们不会出售或主动共享玩家的本地游戏数据。</li></ul>
           <h3>四、数据管理</h3>
           <p>玩家可通过清除该游戏的站点数据删除本地存档。若需访问、更正、删除平台账号相关信息或提出隐私问题，请通过 TapTap 游戏详情页所示的开发者联系渠道联系我们。</p>
           <h3>五、未成年人保护</h3>
           <p>我们遵守适用的未成年人保护与防沉迷要求。未成年人应在监护人指导下使用本游戏，并合理安排游戏时间。</p>
-          <div class="version">NEON FLIGHT · H5 版本 1.1.0</div>
+          <div class="version">NEON FLIGHT · H5 版本 1.2.0</div>
         </div>
         <button id="privacyBackButton" class="panel-back">返回</button>
       </section>
@@ -382,6 +409,8 @@
       <section id="gameOverScreen" class="screen">
         <h2>信号中断</h2>
         <div id="summary"></div>
+        <button id="reviveButton">观看广告复活</button>
+        <div id="adStatus"></div>
         <button id="restartButton">再次飞行</button>
         <div class="menu-actions"><button id="homeButton">返回主界面</button></div>
       </section>
@@ -397,6 +426,7 @@
     </div>
   </div>
 
+  <script src="multiplayer.js"></script>
   <script>
     (() => {
       'use strict';
@@ -417,7 +447,7 @@
         inventory: { shield: 0, damage: 0, xp: 0, upgrade: 0 },
         difficulty: 'normal',
         settings: { impact: true },
-        stats: { runs: 0, bestTime: 0, bestKills: 0, highestLevel: 1, totalKills: 0, totalTime: 0, recent: [] }
+        stats: { runs: 0, bestTime: 0, bestKills: 0, highestLevel: 1, totalKills: 0, totalTime: 0, multiplayerWins: 0, recent: [] }
       };
 
       function loadSave() {
@@ -436,10 +466,10 @@
 
       const saveData = loadSave();
       const difficulties = {
-        easy: { name: '简单', speed: .78, hp: .82, spawn: 1.18, hazard: 1.28, reward: .75, desc: '更慢、更疏，晶体 ×0.75' },
-        normal: { name: '普通', speed: 1, hp: 1, spawn: 1, hazard: 1, reward: 1, desc: '标准速度与奖励倍率' },
-        hard: { name: '困难', speed: 1.25, hp: 1.32, spawn: .82, hazard: .82, reward: 1.55, desc: '更快更密，晶体 ×1.55' },
-        hell: { name: '地狱', speed: 1.58, hp: 1.72, spawn: .66, hazard: .65, reward: 2.3, desc: '极速高压，晶体 ×2.30' }
+        easy: { name: '简单', speed: .78, hp: .82, spawn: 1.18, hazard: 1.28, reward: .8, desc: '更慢、更疏，晶体 ×0.80' },
+        normal: { name: '普通', speed: 1, hp: 1, spawn: 1, hazard: 1, reward: 1, desc: '标准速度与晶体收益' },
+        hard: { name: '困难', speed: 1.25, hp: 1.32, spawn: .82, hazard: .82, reward: 1.25, desc: '更快更密，晶体 ×1.25' },
+        hell: { name: '地狱', speed: 1.58, hp: 1.72, spawn: .66, hazard: .65, reward: 1.55, desc: '极速高压，晶体 ×1.55' }
       };
       const skinPalettes = {
         ship: { cyan: C.cyan, violet: '#ad7aff', gold: '#ffd166', ghost: '#72f1c7', prism: '#f4a7ff', eclipse: '#ff586e' },
@@ -481,9 +511,9 @@
       ];
 
       const ui = {
-        hud: document.querySelector('#hud'), level: document.querySelector('#levelText'),
+        hud: document.querySelector('#hud'), level: document.querySelector('#levelText'), levelLabel: document.querySelector('#levelLabel'),
         time: document.querySelector('#timeText'), xpBar: document.querySelector('#xpBar'),
-        xpText: document.querySelector('#xpText'), title: document.querySelector('#titleScreen'),
+        xpText: document.querySelector('#xpText'), xpWrap: document.querySelector('.xp-wrap'), title: document.querySelector('#titleScreen'),
         levelScreen: document.querySelector('#levelScreen'), choices: document.querySelector('#choices'),
         gameOver: document.querySelector('#gameOverScreen'), summary: document.querySelector('#summary'),
         settings: document.querySelector('#settingsScreen'), impact: document.querySelector('#impactButton'),
@@ -491,7 +521,10 @@
         shop: document.querySelector('#shopScreen'), shopContent: document.querySelector('#shopContent'),
         shopCurrency: document.querySelector('#shopCurrency'), archive: document.querySelector('#archiveScreen'),
         archiveContent: document.querySelector('#archiveContent'), privacy: document.querySelector('#privacyScreen'),
-        difficultyOptions: document.querySelector('#difficultyOptions'), difficultyDesc: document.querySelector('#difficultyDesc')
+        difficultyOptions: document.querySelector('#difficultyOptions'), difficultyDesc: document.querySelector('#difficultyDesc'),
+        revive: document.querySelector('#reviveButton'), adStatus: document.querySelector('#adStatus'),
+        multiplayer: document.querySelector('#multiplayerScreen'), mpStatus: document.querySelector('#mpStatus'),
+        mpPlayers: document.querySelector('#mpPlayers'), mpJoin: document.querySelector('#mpJoinButton'), modeBadge: document.querySelector('#modeBadge')
       };
 
       let state = 'title', previousState = 'title', runAwarded = false;
@@ -500,6 +533,11 @@
       let bullets = [], enemies = [], particles = [], orbs = [], shockwaves = [];
       let keys = new Set(), pointer = { active: false, x: W / 2, y: H * .8 };
       let audioCtx = null, lastShotSound = 0, hudTimer = 0, activeVoices = 0;
+      let gameMode = 'solo', reviveUsed = false, revivePending = false, lastEarned = 0;
+      let multiplayerClient = null, multiplayerStarted = false, multiplayerParticipants = 1;
+      let localMultiplayerAlive = true, multiplayerResultShown = false, multiplayerStartTimer = 0;
+      const remotePlayers = new Map();
+      const multiplayerColors = [C.pink, C.lime, C.orange, '#ad7aff'];
 
       const player = {
         x: W / 2, y: H - 120, tx: W / 2, ty: H - 120, r: 13,
@@ -616,7 +654,8 @@
         const cards = [
           ['飞行次数', s.runs], ['最佳生存', formatTime(s.bestTime)],
           ['最高等级', s.highestLevel], ['单局最多击碎', s.bestKills],
-          ['累计击碎', s.totalKills], ['累计飞行', formatTime(s.totalTime)]
+          ['累计击碎', s.totalKills], ['累计飞行', formatTime(s.totalTime)],
+          ['联机胜场', s.multiplayerWins || 0]
         ];
         ui.archiveContent.innerHTML = `<div class="archive-grid">${cards.map(([k,v]) => `<div class="archive-stat"><span>${k}</span><b>${v}</b></div>`).join('')}</div>`;
         const recent = document.createElement('div'); recent.className = 'recent-runs';
@@ -637,16 +676,25 @@
       }
 
       function returnTitle() {
+        if (state === 'gameover' && gameMode === 'solo' && !runAwarded) finalizeRun();
+        if (multiplayerClient) multiplayerClient.leaveRoom();
         state = 'title'; previousState = 'title';
         ui.gameOver.classList.remove('active'); ui.levelScreen.classList.remove('active');
-        ui.shop.classList.remove('active'); ui.archive.classList.remove('active'); ui.privacy.classList.remove('active'); ui.settings.classList.remove('active');
+        ui.shop.classList.remove('active'); ui.archive.classList.remove('active'); ui.privacy.classList.remove('active'); ui.settings.classList.remove('active'); ui.multiplayer.classList.remove('active');
+        ui.modeBadge.classList.remove('active'); remotePlayers.clear(); multiplayerStarted = false;
         reset(); ui.title.classList.add('active'); updateCurrencyUI();
+      }
+
+      function calculateRunReward() {
+        const raw = player.kills * .35 + elapsed / 35 + player.level * .8;
+        return Math.min(60, Math.max(2, Math.floor(raw * activeDifficulty().reward)));
       }
 
       function finalizeRun() {
         if (runAwarded) return 0;
         runAwarded = true;
-        const earned = Math.max(4, Math.floor((player.kills * 2 + elapsed / 10 + player.level * 3) * activeDifficulty().reward));
+        const earned = calculateRunReward();
+        lastEarned = earned;
         const s = saveData.stats;
         saveData.credits += earned; s.runs++; s.totalKills += player.kills; s.totalTime += elapsed;
         s.bestTime = Math.max(s.bestTime, elapsed); s.bestKills = Math.max(s.bestKills, player.kills); s.highestLevel = Math.max(s.highestLevel, player.level);
@@ -664,6 +712,7 @@
         });
         bullets = []; enemies = []; particles = []; orbs = []; shockwaves = [];
         elapsed = 0; spawnTimer = .5; hazardTimer = 2.2; shake = 0; hitStop = 0; hudTimer = 0;
+        revivePending = false; lastEarned = 0;
         updateHUD();
       }
 
@@ -681,12 +730,139 @@
         return preloadedUpgrade;
       }
 
-      function startGame() {
-        ensureAudio(); reset(); const preloadedUpgrade = applyConsumables(); runAwarded = false; state = 'playing';
+      function startGame(mode = 'solo') {
+        if (mode !== 'solo' && mode !== 'multiplayer') mode = 'solo';
+        gameMode = mode; ensureAudio(); reset(); reviveUsed = false;
+        const preloadedUpgrade = mode === 'solo' ? applyConsumables() : false;
+        runAwarded = false; state = 'playing';
         ui.title.classList.remove('active'); ui.gameOver.classList.remove('active');
-        ui.shop.classList.remove('active'); ui.archive.classList.remove('active'); ui.privacy.classList.remove('active'); ui.settings.classList.remove('active');
+        ui.shop.classList.remove('active'); ui.archive.classList.remove('active'); ui.privacy.classList.remove('active'); ui.settings.classList.remove('active'); ui.multiplayer.classList.remove('active');
+        ui.revive.hidden = mode !== 'solo'; ui.adStatus.textContent = '';
+        ui.modeBadge.classList.toggle('active', mode === 'multiplayer');
         updateHUD(); tone(220, .06, 'sine', .04);
         if (preloadedUpgrade) setTimeout(() => { if (state === 'playing') showLevelUp(); }, 140);
+      }
+
+      function openMultiplayerLobby() {
+        ensureAudio(); ui.title.classList.remove('active'); ui.multiplayer.classList.add('active');
+        ui.mpStatus.textContent = window.NeonMultiplayer && new window.NeonMultiplayer().isSupported()
+          ? 'TapTap 联机运行时已就绪，点击开始匹配'
+          : '当前浏览器没有 TapTap 联机运行时，请在 TapTap 真机环境中测试';
+        ui.mpJoin.disabled = !(window.NeonMultiplayer && new window.NeonMultiplayer().isSupported());
+        renderMultiplayerPlayers();
+      }
+
+      function renderMultiplayerPlayers() {
+        if (!ui.mpPlayers) return;
+        const rows = [{ id: multiplayerClient && multiplayerClient.myPlayerId || 'local', mine: true, alive: localMultiplayerAlive }];
+        remotePlayers.forEach((value, id) => rows.push({ id, mine: false, alive: value.alive !== false }));
+        ui.mpPlayers.innerHTML = rows.slice(0, 4).map((p, index) => `<div class="mp-player ${p.alive ? 'alive' : 'out'}">${p.mine ? '你' : `玩家 ${index + 1}`} · ${p.alive ? '待命' : '已淘汰'}</div>`).join('');
+      }
+
+      function configureMultiplayerCallbacks() {
+        multiplayerClient.onPlayerJoined = info => {
+          const id = info.id || info.playerId;
+          if (!id || id === multiplayerClient.myPlayerId) return;
+          if (!remotePlayers.has(id)) remotePlayers.set(id, createRemotePlayer(id));
+          multiplayerParticipants = Math.min(4, 1 + remotePlayers.size);
+          renderMultiplayerPlayers();
+          if (multiplayerStarted && multiplayerClient.isHost) multiplayerClient.sendEvent('match_start', { startedAt: Date.now(), lateJoin: true });
+          else scheduleMultiplayerStart();
+        };
+        multiplayerClient.onPlayerLeft = id => {
+          remotePlayers.delete(id); renderMultiplayerPlayers(); checkMultiplayerWinner();
+        };
+        multiplayerClient.onDataReceived = (data, fromId) => {
+          if (!remotePlayers.has(fromId)) remotePlayers.set(fromId, createRemotePlayer(fromId));
+          const remote = remotePlayers.get(fromId);
+          if (data.type === 'state') {
+            remote.targetX = clamp(Number(data.x) || remote.x, 24, W - 24);
+            remote.targetY = clamp(Number(data.y) || remote.y, 58, H - 52);
+            remote.alive = data.alive !== false; remote.kills = Number(data.kills) || 0;
+          } else if (data.type === 'event' && data.eventType === 'death') {
+            remote.alive = false; renderMultiplayerPlayers(); checkMultiplayerWinner();
+          } else if (data.type === 'event' && data.eventType === 'match_start' && !multiplayerStarted) {
+            beginMultiplayerGame();
+          }
+        };
+        multiplayerClient.onDisconnected = () => {
+          ui.mpStatus.textContent = '联机已断开，请返回主界面后重新匹配';
+          if (multiplayerStarted) finishMultiplayerMatch(null, '连接中断');
+        };
+      }
+
+      function createRemotePlayer(id) {
+        const index = remotePlayers.size % multiplayerColors.length;
+        return { id, x: W / 2, y: H - 150, targetX: W / 2, targetY: H - 150, alive: true, kills: 0, color: multiplayerColors[index], fire: rand(0, 1) };
+      }
+
+      async function startMultiplayerMatchmaking() {
+        if (!window.NeonMultiplayer) return;
+        ui.mpJoin.disabled = true; ui.mpStatus.textContent = '正在连接 TapTap 联机服务…';
+        multiplayerClient = new window.NeonMultiplayer(); configureMultiplayerCallbacks();
+        const init = await multiplayerClient.init();
+        if (!init.success) {
+          ui.mpStatus.textContent = init.unsupported ? '请在 TapTap App 真机环境中打开游戏' : `连接失败：${init.error}`;
+          ui.mpJoin.disabled = false; return;
+        }
+        ui.mpStatus.textContent = '正在匹配 2–4 人生存房间…';
+        const match = await multiplayerClient.matchRoom(4, 'neon_survival_v1', { version: '1.2.0' });
+        if (!match.success) { ui.mpStatus.textContent = `匹配失败：${match.error}`; ui.mpJoin.disabled = false; return; }
+        remotePlayers.clear();
+        for (const p of match.roomInfo.players || []) if (p.id !== multiplayerClient.myPlayerId) remotePlayers.set(p.id, createRemotePlayer(p.id));
+        multiplayerParticipants = Math.min(4, Math.max(1, (match.roomInfo.players || []).length));
+        localMultiplayerAlive = true; multiplayerResultShown = false;
+        ui.mpStatus.textContent = `已进入房间 · ${multiplayerParticipants}/4，等待至少 2 人…`;
+        renderMultiplayerPlayers(); scheduleMultiplayerStart();
+      }
+
+      function scheduleMultiplayerStart() {
+        if (!multiplayerClient || !multiplayerClient.isHost || multiplayerStarted || multiplayerStartTimer) return;
+        multiplayerParticipants = Math.min(4, 1 + remotePlayers.size);
+        if (multiplayerParticipants < 2) return;
+        ui.mpStatus.textContent = `${multiplayerParticipants}/4 已就绪，3 秒后开始`;
+        multiplayerStartTimer = setTimeout(() => {
+          multiplayerStartTimer = 0;
+          if (!multiplayerClient || multiplayerStarted) return;
+          multiplayerClient.sendEvent('match_start', { startedAt: Date.now() });
+          beginMultiplayerGame();
+        }, 3000);
+      }
+
+      function beginMultiplayerGame() {
+        multiplayerStarted = true; multiplayerResultShown = false; localMultiplayerAlive = true;
+        multiplayerParticipants = Math.min(4, Math.max(2, 1 + remotePlayers.size));
+        remotePlayers.forEach(p => p.alive = true);
+        startGame('multiplayer'); renderMultiplayerPlayers();
+      }
+
+      function eliminateMultiplayerPlayer() {
+        if (!localMultiplayerAlive) return;
+        localMultiplayerAlive = false; state = 'spectating'; feedback(12, 0);
+        emit(player.x, player.y, shipColor(), 28, 220, .9, true); tone(110, .45, 'sawtooth', .055, -80);
+        multiplayerClient && multiplayerClient.sendEvent('death', { time: Math.round(elapsed * 10) / 10, kills: player.kills });
+        ui.modeBadge.textContent = 'SPECTATING · 等待最终结果';
+        renderMultiplayerPlayers(); checkMultiplayerWinner();
+      }
+
+      function checkMultiplayerWinner() {
+        if (!multiplayerStarted || multiplayerResultShown || multiplayerParticipants < 2) return;
+        const alive = [];
+        if (localMultiplayerAlive) alive.push(multiplayerClient && multiplayerClient.myPlayerId || 'local');
+        remotePlayers.forEach((p, id) => { if (p.alive !== false) alive.push(id); });
+        if (alive.length > 1) return;
+        finishMultiplayerMatch(alive[0] || null);
+      }
+
+      function finishMultiplayerMatch(winnerId, reason = '') {
+        if (multiplayerResultShown) return;
+        multiplayerResultShown = true; state = 'gameover';
+        const won = winnerId && multiplayerClient && winnerId === multiplayerClient.myPlayerId;
+        if (won) { saveData.stats.multiplayerWins = (saveData.stats.multiplayerWins || 0) + 1; saveProgress(); }
+        ui.gameOver.querySelector('h2').textContent = won ? '最终幸存' : '本局结束';
+        ui.summary.innerHTML = `${reason || (won ? '你是最后存活的战机' : '胜者已经产生')}<br>生存时间　${formatTime(elapsed)}<br>击碎目标　${player.kills}<br><span style="color:${C.pink}">联机局不结算晶体</span>`;
+        ui.revive.hidden = true; ui.adStatus.textContent = '';
+        ui.gameOver.classList.add('active'); ui.modeBadge.textContent = `ONLINE SURVIVAL · ${won ? 'WIN' : 'RESULT'}`;
       }
 
       function ensureAudio() {
@@ -773,7 +949,7 @@
         feedback(enemy.type === 'lime' ? 8 : 4, enemy.type === 'lime' ? .075 : .045);
         emit(enemy.x, enemy.y, enemy.color, Math.round(enemy.r * .5), 170, .65, true);
         shockwaves.push({ x: enemy.x, y: enemy.y, r: enemy.r * .3, max: enemy.r * 2.3, life: .35, color: enemy.color });
-        const count = enemy.type === 'lime' ? 5 : enemy.type === 'orange' ? 3 : 2;
+        const count = gameMode === 'multiplayer' ? 0 : enemy.type === 'lime' ? 5 : enemy.type === 'orange' ? 3 : 2;
         for (let i = 0; i < count; i++) orbs.push({ x: enemy.x + rand(-10, 10), y: enemy.y + rand(-10, 10), vx: rand(-35, 35), vy: rand(-25, 35), value: 1 });
         tone(enemy.type === 'lime' ? 75 : 95, .13, 'sawtooth', .035, -45);
 
@@ -789,6 +965,7 @@
       }
 
       function addXP(amount) {
+        if (gameMode === 'multiplayer') return;
         player.xp += amount * player.xpGain;
         if (player.xp >= player.xpNext) {
           player.xp -= player.xpNext; player.level++; player.xpNext = Math.ceil(player.xpNext * 1.35 + 2);
@@ -798,6 +975,7 @@
       }
 
       function showLevelUp() {
+        if (gameMode === 'multiplayer') return;
         state = 'levelup'; ui.levelScreen.classList.add('active'); ui.choices.innerHTML = '';
         const pool = [...upgrades].sort(() => Math.random() - .5).slice(0, 3);
         pool.forEach(up => {
@@ -812,12 +990,43 @@
       }
 
       function gameOver() {
+        if (gameMode === 'multiplayer') { eliminateMultiplayerPlayer(); return; }
         state = 'gameover'; feedback(12, 0);
         emit(player.x, player.y, shipColor(), 28, 220, .9, true);
         tone(110, .45, 'sawtooth', .055, -80);
-        const earned = finalizeRun();
-        ui.summary.innerHTML = `生存时间　${formatTime(elapsed)}<br>击碎目标　${player.kills}<br>最终等级　${player.level}<br><span style="color:${C.orange}">◇ +${earned} 能量晶体</span>`;
+        const finalDeath = reviveUsed;
+        const earned = finalDeath ? finalizeRun() : calculateRunReward();
+        ui.gameOver.querySelector('h2').textContent = '信号中断';
+        ui.summary.innerHTML = `生存时间　${formatTime(elapsed)}<br>击碎目标　${player.kills}<br>最终等级　${player.level}<br><span style="color:${C.orange}">${finalDeath ? '◇ +' : '预计 ◇ +'}${earned} 能量晶体</span>`;
+        ui.revive.hidden = finalDeath; ui.revive.disabled = false;
+        ui.revive.textContent = '观看广告复活';
+        ui.adStatus.textContent = finalDeath ? '本局复活次数已用完' : '每局限一次 · 联机模式不可用';
         setTimeout(() => ui.gameOver.classList.add('active'), 420);
+      }
+
+      async function requestRewardedRevive() {
+        if (gameMode !== 'solo' || reviveUsed || revivePending || state !== 'gameover') return;
+        revivePending = true; ui.revive.disabled = true; ui.revive.textContent = '广告准备中…';
+        ui.adStatus.textContent = 'TapTap 广告尚未开通，当前使用测试流程';
+        let rewarded = false;
+        try {
+          if (window.NeonFlightAds && typeof window.NeonFlightAds.showRewarded === 'function') {
+            rewarded = await window.NeonFlightAds.showRewarded('revive');
+          } else {
+            await new Promise(resolve => setTimeout(resolve, 1200));
+            rewarded = true;
+          }
+        } catch (error) {
+          ui.adStatus.textContent = '广告播放失败，请稍后再试';
+        }
+        revivePending = false;
+        if (!rewarded) { ui.revive.disabled = false; ui.revive.textContent = '观看广告复活'; return; }
+        reviveUsed = true; ui.gameOver.classList.remove('active'); state = 'playing';
+        enemies = enemies.filter(enemy => Math.hypot(enemy.x - player.x, enemy.y - player.y) > 190);
+        bullets = []; player.shield = Math.max(1, player.shield);
+        shockwaves.push({ x: player.x, y: player.y, r: 18, max: 180, life: .55, color: C.orange });
+        emit(player.x, player.y, C.orange, 24, 210, .75, true); tone(240, .2, 'sine', .05, 500);
+        ui.adStatus.textContent = '';
       }
 
       function shieldBreak(enemy) {
@@ -838,25 +1047,28 @@
         gridOffset = (gridOffset + dt * 46) % 40;
         shake = Math.max(0, shake - dt * 24);
         if (state === 'paused') return;
-        if (state !== 'playing') { updateEffects(dt); return; }
+        if (state !== 'playing' && state !== 'spectating') { updateEffects(dt); return; }
+        const activePlayer = state === 'playing';
         elapsed += dt; hudTimer -= dt;
 
         let dx = 0, dy = 0;
-        if (keys.has('ArrowLeft') || keys.has('KeyA')) dx--;
-        if (keys.has('ArrowRight') || keys.has('KeyD')) dx++;
-        if (keys.has('ArrowUp') || keys.has('KeyW')) dy--;
-        if (keys.has('ArrowDown') || keys.has('KeyS')) dy++;
-        if (dx || dy) {
-          const l = Math.hypot(dx, dy); player.x += dx / l * player.speed * dt; player.y += dy / l * player.speed * dt;
-          player.tx = player.x; player.ty = player.y;
-        } else if (pointer.active) {
-          player.x += (pointer.x - player.x) * Math.min(1, dt * 13);
-          player.y += (pointer.y - player.y) * Math.min(1, dt * 13);
-        }
-        player.x = clamp(player.x, 24, W - 24); player.y = clamp(player.y, 58, H - 52);
+        if (activePlayer) {
+          if (keys.has('ArrowLeft') || keys.has('KeyA')) dx--;
+          if (keys.has('ArrowRight') || keys.has('KeyD')) dx++;
+          if (keys.has('ArrowUp') || keys.has('KeyW')) dy--;
+          if (keys.has('ArrowDown') || keys.has('KeyS')) dy++;
+          if (dx || dy) {
+            const l = Math.hypot(dx, dy); player.x += dx / l * player.speed * dt; player.y += dy / l * player.speed * dt;
+            player.tx = player.x; player.ty = player.y;
+          } else if (pointer.active) {
+            player.x += (pointer.x - player.x) * Math.min(1, dt * 13);
+            player.y += (pointer.y - player.y) * Math.min(1, dt * 13);
+          }
+          player.x = clamp(player.x, 24, W - 24); player.y = clamp(player.y, 58, H - 52);
 
-        player.fireTimer -= dt;
-        if (player.fireTimer <= 0) { shoot(); player.fireTimer += 1 / player.fireRate; }
+          player.fireTimer -= dt;
+          if (player.fireTimer <= 0) { shoot(); player.fireTimer += 1 / player.fireRate; }
+        }
 
         spawnTimer -= dt;
         if (spawnTimer <= 0) {
@@ -887,10 +1099,12 @@
           }
         }
 
-        for (const e of enemies) {
-          if (e.dead) continue;
-          if (Math.hypot(player.x - e.x, player.y - e.y) < player.r + e.r * .78) {
-            if (player.shield > 0) shieldBreak(e); else { gameOver(); break; }
+        if (activePlayer) {
+          for (const e of enemies) {
+            if (e.dead) continue;
+            if (Math.hypot(player.x - e.x, player.y - e.y) < player.r + e.r * .78) {
+              if (player.shield > 0) shieldBreak(e); else { gameOver(); break; }
+            }
           }
         }
 
@@ -909,6 +1123,15 @@
         enemies = enemies.filter(e => !e.dead);
         orbs = orbs.filter(o => !o.dead && o.y < H + 40);
         if (orbs.length > 220) orbs.splice(0, orbs.length - 220);
+        if (gameMode === 'multiplayer' && multiplayerClient && multiplayerStarted) {
+          multiplayerClient.syncState({ x: player.x, y: player.y, alive: localMultiplayerAlive, kills: player.kills });
+          remotePlayers.forEach(remote => {
+            remote.x += (remote.targetX - remote.x) * Math.min(1, dt * 12);
+            remote.y += (remote.targetY - remote.y) * Math.min(1, dt * 12);
+            remote.fire = (remote.fire + dt * 4.5) % 1;
+          });
+          checkMultiplayerWinner();
+        }
         updateEffects(dt);
         if (hudTimer <= 0) { updateHUD(); hudTimer = .1; }
       }
@@ -931,7 +1154,8 @@
         for (const e of enemies) drawEnemy(e);
         for (const s of shockwaves) drawShockwave(s);
         for (const p of particles) drawParticle(p);
-        if (state !== 'gameover') drawPlayer();
+        if (gameMode === 'multiplayer') remotePlayers.forEach(drawRemotePlayer);
+        if (state !== 'gameover' && (gameMode !== 'multiplayer' || localMultiplayerAlive)) drawPlayer();
         ctx.restore();
         drawVignette();
       }
@@ -991,6 +1215,16 @@
           ctx.globalAlpha = .5 + Math.random() * .35; ctx.beginPath(); ctx.moveTo(-3, 17); ctx.lineTo(0, 27 + Math.random() * 7); ctx.lineTo(3, 17); ctx.stroke();
         }
         if (player.shield > 0) { ctx.globalAlpha = .55; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(0, 0, 25 + Math.sin(elapsed * 4) * 2, 0, Math.PI * 2); ctx.stroke(); }
+        ctx.restore();
+      }
+
+      function drawRemotePlayer(remote) {
+        if (!remote || remote.alive === false || !multiplayerStarted) return;
+        const color = remote.color || C.pink;
+        ctx.save(); ctx.translate(remote.x, remote.y); ctx.strokeStyle = color; ctx.fillStyle = hexAlpha(color, .1); ctx.lineWidth = 2.4; ctx.lineJoin = 'round'; glow(color, 10);
+        ctx.beginPath(); ctx.moveTo(0, -17); ctx.lineTo(12, 11); ctx.lineTo(3, 7); ctx.lineTo(0, 15); ctx.lineTo(-3, 7); ctx.lineTo(-12, 11); ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.globalAlpha = .35 + remote.fire * .3; ctx.beginPath(); ctx.moveTo(-3, -18); ctx.lineTo(-3, -44); ctx.moveTo(3, -18); ctx.lineTo(3, -44); ctx.stroke();
+        ctx.shadowBlur = 0; ctx.globalAlpha = .8; ctx.fillStyle = color; ctx.font = '8px Segoe UI'; ctx.textAlign = 'center'; ctx.fillText('ALLY', 0, 29);
         ctx.restore();
       }
 
@@ -1143,7 +1377,15 @@
       }
 
       function updateHUD() {
-        ui.level.textContent = player.level;
+        if (gameMode === 'multiplayer') {
+          let alive = localMultiplayerAlive ? 1 : 0;
+          remotePlayers.forEach(p => { if (p.alive !== false) alive++; });
+          ui.levelLabel.textContent = 'SURVIVORS'; ui.level.textContent = `${alive}/${Math.max(2, multiplayerParticipants)}`;
+          ui.xpWrap.style.display = 'none';
+          ui.modeBadge.textContent = localMultiplayerAlive ? `ONLINE SURVIVAL · ${alive} ALIVE` : 'SPECTATING · 等待最终结果';
+        } else {
+          ui.levelLabel.textContent = 'LEVEL'; ui.level.textContent = player.level; ui.xpWrap.style.display = '';
+        }
         const min = Math.floor(elapsed / 60), sec = Math.floor(elapsed % 60);
         ui.time.textContent = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
         ui.xpBar.style.width = `${Math.min(100, player.xp / player.xpNext * 100)}%`;
@@ -1176,10 +1418,14 @@
       addEventListener('keyup', ev => keys.delete(ev.code));
       addEventListener('blur', () => { keys.clear(); pointer.active = false; });
       document.addEventListener('visibilitychange', () => {
-        if (document.hidden && state === 'playing') openSettings();
+        if (document.hidden && (state === 'playing' || state === 'spectating')) openSettings();
       });
-      document.querySelector('#startButton').addEventListener('click', startGame);
-      document.querySelector('#restartButton').addEventListener('click', startGame);
+      document.querySelector('#startButton').addEventListener('click', () => startGame('solo'));
+      document.querySelector('#restartButton').addEventListener('click', () => {
+        if (gameMode === 'multiplayer') { returnTitle(); openMultiplayerLobby(); return; }
+        if (!runAwarded) finalizeRun(); startGame('solo');
+      });
+      ui.revive.addEventListener('click', requestRewardedRevive);
       document.querySelector('#homeButton').addEventListener('click', returnTitle);
       document.querySelector('#settingsButton').addEventListener('click', openSettings);
       document.querySelector('#resumeButton').addEventListener('click', closeSettings);
@@ -1194,6 +1440,9 @@
       document.querySelector('#shopBackButton').addEventListener('click', () => ui.shop.classList.remove('active'));
       document.querySelector('#archiveButton').addEventListener('click', () => { renderArchive(); ui.archive.classList.add('active'); });
       document.querySelector('#archiveBackButton').addEventListener('click', () => ui.archive.classList.remove('active'));
+      document.querySelector('#multiplayerButton').addEventListener('click', openMultiplayerLobby);
+      ui.mpJoin.addEventListener('click', startMultiplayerMatchmaking);
+      document.querySelector('#mpBackButton').addEventListener('click', returnTitle);
       document.querySelector('#privacyButton').addEventListener('click', () => ui.privacy.classList.add('active'));
       document.querySelector('#privacyBackButton').addEventListener('click', () => ui.privacy.classList.remove('active'));
       ui.difficultyOptions.addEventListener('click', ev => {
@@ -1213,7 +1462,7 @@
 
       updateCurrencyUI(); updateDifficultyUI();
       const launchParams = new URLSearchParams(location.search);
-      if (launchParams.has('autostart')) startGame();
+      if (launchParams.has('autostart')) startGame('solo');
       else if (launchParams.has('shop')) { renderShop(); ui.shop.classList.add('active'); }
       requestAnimationFrame(frame);
     })();
