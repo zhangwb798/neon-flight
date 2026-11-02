@@ -536,6 +536,7 @@
       let gameMode = 'solo', reviveUsed = false, revivePending = false, lastEarned = 0;
       let multiplayerClient = null, multiplayerStarted = false, multiplayerParticipants = 1;
       let localMultiplayerAlive = true, multiplayerResultShown = false, multiplayerStartTimer = 0;
+      let enemySequence = 0;
       const remotePlayers = new Map();
       const multiplayerColors = [C.pink, C.lime, C.orange, '#ad7aff'];
 
@@ -783,6 +784,8 @@
             remote.alive = false; renderMultiplayerPlayers(); checkMultiplayerWinner();
           } else if (data.type === 'event' && data.eventType === 'match_start' && !multiplayerStarted) {
             beginMultiplayerGame();
+          } else if (data.type === 'event' && data.eventType === 'enemy_spawn' && !multiplayerClient.isHost && data.enemy) {
+            addNetworkEnemy(data.enemy);
           }
         };
         multiplayerClient.onDisconnected = () => {
@@ -884,6 +887,15 @@
         osc.onended = () => { activeVoices = Math.max(0, activeVoices - 1); };
       }
 
+      function serializeEnemy(enemy) {
+        return { id: enemy.id, x: enemy.x, y: enemy.y, r: enemy.r, hp: enemy.hp, maxHp: enemy.maxHp, speed: enemy.speed, type: enemy.type, rot: enemy.rot, spin: enemy.spin, sides: enemy.sides, wobble: enemy.wobble, invulnerable: enemy.invulnerable };
+      }
+
+      function addNetworkEnemy(data) {
+        if (!data || enemies.length >= 90 || enemies.some(enemy => enemy.id === data.id)) return;
+        enemies.push({ ...data, color: data.invulnerable ? C.steel : targetColor(data.type), hit: 0, dead: false });
+      }
+
       function spawnEnemy() {
         if (enemies.length >= 90) return;
         const mode = activeDifficulty();
@@ -893,12 +905,15 @@
         const base = type === 'pink' ? 2 : type === 'orange' ? 5 : 11;
         const radius = type === 'pink' ? rand(18, 25) : type === 'orange' ? rand(22, 30) : rand(32, 43);
         const hp = Math.ceil(base * (1 + elapsed / 75) * mode.hp);
-        enemies.push({
+        const enemy = {
+          id: `e${Date.now().toString(36)}${enemySequence++}`,
           x: rand(42, W - 42), y: -radius - 10, r: radius, hp, maxHp: hp,
           speed: rand(52, 78) * speedScale * mode.speed, color: targetColor(type), type,
           rot: rand(0, Math.PI * 2), spin: rand(-1.35, 1.35), sides: type === 'lime' ? 8 : type === 'orange' ? 7 : 5,
           hit: 0, wobble: rand(0, 10), dead: false, invulnerable: false
-        });
+        };
+        enemies.push(enemy);
+        if (gameMode === 'multiplayer' && multiplayerClient && multiplayerClient.isHost) multiplayerClient.sendEvent('enemy_spawn', { enemy: serializeEnemy(enemy) });
       }
 
       function spawnHazard() {
@@ -906,12 +921,15 @@
         const mode = activeDifficulty();
         const speedScale = Math.min(3.5, 1 + elapsed / 38);
         const radius = rand(25, 38);
-        enemies.push({
+        const enemy = {
+          id: `h${Date.now().toString(36)}${enemySequence++}`,
           x: rand(44, W - 44), y: -radius - 10, r: radius, hp: Infinity, maxHp: Infinity,
           speed: rand(68, 94) * speedScale * mode.speed, color: C.steel, type: 'steel',
           rot: rand(0, Math.PI * 2), spin: rand(-1.15, 1.15), sides: Math.random() < .5 ? 6 : 8,
           hit: 0, wobble: rand(0, 10), dead: false, invulnerable: true
-        });
+        };
+        enemies.push(enemy);
+        if (gameMode === 'multiplayer' && multiplayerClient && multiplayerClient.isHost) multiplayerClient.sendEvent('enemy_spawn', { enemy: serializeEnemy(enemy) });
       }
 
       function shoot() {
@@ -1072,13 +1090,15 @@
 
         spawnTimer -= dt;
         if (spawnTimer <= 0) {
-          spawnEnemy();
-          spawnTimer = Math.max(.14, Math.max(.18, .82 - elapsed * .006) * activeDifficulty().spawn) * rand(.72, 1.16);
+          if (gameMode !== 'multiplayer' || (multiplayerClient && multiplayerClient.isHost)) spawnEnemy();
+          const baseSpawn = Math.max(.14, Math.max(.18, .82 - elapsed * .006) * activeDifficulty().spawn) * rand(.72, 1.16);
+          spawnTimer = gameMode === 'multiplayer' ? Math.max(.35, baseSpawn) : baseSpawn;
         }
         hazardTimer -= dt;
         if (hazardTimer <= 0) {
-          spawnHazard();
-          hazardTimer = Math.max(1.25, Math.max(2.1, 5.2 - elapsed * .018) * activeDifficulty().hazard) * rand(.82, 1.16);
+          if (gameMode !== 'multiplayer' || (multiplayerClient && multiplayerClient.isHost)) spawnHazard();
+          const baseHazard = Math.max(1.25, Math.max(2.1, 5.2 - elapsed * .018) * activeDifficulty().hazard) * rand(.82, 1.16);
+          hazardTimer = gameMode === 'multiplayer' ? Math.max(2.4, baseHazard) : baseHazard;
         }
 
         for (const b of bullets) { b.x += b.vx * dt; b.y += b.vy * dt; b.life -= dt; }
