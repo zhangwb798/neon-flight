@@ -2,7 +2,7 @@
  * NEON FLIGHT 多人联机模块
  *
  * TapTap 小游戏/H5 运行时会注入全局 tap 对象。
- * API 频率限制：sendCustomMessage 等共享每秒 15 次，本模块将状态同步限制为约 8 次/秒。
+ * API 频率限制：sendCustomMessage 等共享每秒 15 次，本模块将状态同步限制为约 6–7 次/秒。
  * 详细规范请参阅 MULTIPLAYER_GUIDE.md。
  */
 (function () {
@@ -20,7 +20,7 @@
       this.remotePlayers = new Map();
       this.lastSyncAt = 0;
       this.lastSendAt = 0;
-      this.syncInterval = 125;
+      this.syncInterval = 150;
       this.maxMessageSize = 2048;
       this.onPlayerJoined = null;
       this.onPlayerLeft = null;
